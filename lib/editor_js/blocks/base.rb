@@ -5,7 +5,7 @@ module EditorJs
       include ActionView::Helpers::TagHelper
       include ERB::Util
 
-      attr_accessor :raw, :data
+      attr_accessor :raw
 
       def type
         @type ||= self.class.to_s.underscore.split('/').last.gsub('_block', '')
@@ -13,49 +13,49 @@ module EditorJs
 
       def initialize(block_data = nil)
         @raw = cast_block_data_to_hash(block_data)
-        validates_raw!
       end
 
+      def data
+        raw['data']
+      end
+
+      # Define Block JSON format
       def schema
         raise NotImplementedError
       end
 
+      # Render HTML
       def render(options = {})
         raise NotImplementedError
       end
 
+      # Validate block data
       def valid?
         JSON::Validator.validate(schema, raw)
       end
 
+      # Render plain text, for full-text searching
       def plain
-        @block_data
-      end
-
-      def sanitize
         @block_data
       end
 
       private
 
-      def validates_raw!
-        raise InvalidBlockDataError, "block type <#{raw['type']}> doesn't match <#{type}>" unless raw['type'] == type
-
-        @data = raw['data']
-      end
-
       def cast_block_data_to_hash(str_or_hash)
         str_or_hash = JSON.parse(str_or_hash) if str_or_hash.is_a?(String)
-        return { 'type' => type } if str_or_hash.nil?
-        return str_or_hash.deep_stringify_keys if str_or_hash.is_a?(Hash)
+        str_or_hash = { 'type' => type } if str_or_hash.nil?
+        raise InvalidBlockDataError, str_or_hash unless str_or_hash.is_a?(Hash)
 
-        raise InvalidBlockDataError, str_or_hash
+        str_or_hash = str_or_hash.deep_stringify_keys
+        raise InvalidBlockDataError, "block type <#{str_or_hash['type']}> doesn't match <#{type}>" unless str_or_hash['type'] == type
+
+        str_or_hash
       rescue JSON::ParserError => _e
         raise InvalidBlockDataError, "Invalid JSON: #{str_or_hash}"
       end
 
-      def output_buffer=(v)
-        @output_buffer = v
+      def output_buffer=(value)
+        @output_buffer = value
       end
 
       def output_buffer
