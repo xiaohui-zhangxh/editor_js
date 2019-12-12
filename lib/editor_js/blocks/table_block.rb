@@ -38,7 +38,7 @@ module EditorJs
       end
 
       def plain
-        data['content'].flatten.join(', ').gsub(/(, )+/, ', ')
+        decode_html data['content'].flatten.join(', ').gsub(/(, )+/, ', ')
       end
     end
   end
