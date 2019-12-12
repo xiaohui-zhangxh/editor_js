@@ -4,30 +4,35 @@ module EditorJs
   module Blocks
     class ChecklistBlock < Base
       def schema
-        { type: 'object',
-          additionalProperties: false,
-          properties: { type: { type: 'string' },
-                        data: { type: 'object',
-                                additionalProperties: false,
-                                properties: { items: { type: 'array',
-                                                       items: { type: 'object',
-                                                                additionalProperties: false,
-                                                                properties: { text: { type: 'string' },
-                                                                              checked: { type: 'boolean' } } } } } } } }
+        YAML.safe_load(<<~YAML)
+          type: object
+          additionalProperties: false
+          properties:
+            items:
+              type: array
+              items:
+                type: object
+                additionalProperties: false
+                properties:
+                  text:
+                    type: string
+                  checked:
+                    type: boolean
+                required:
+                - text
+        YAML
       end
 
       def render(_options = {})
-        content_tag :div, class: 'editor_js__checklist' do
-          data['items'].map do |item|
-            content_tag :input, type: 'checkbox', disabled: true, checked: item['checked'] do
-              item['text']
-            end
-          end.join.html_safe
+        content_tag :div, class: css_name do
+          data['items'].each do |item|
+            concat content_tag(:input, item['text'], type: 'checkbox', disabled: true, checked: item['checked'])
+          end
         end
       end
 
       def plain
-        data['items'].map { |item| html_escape_once(item['text']) }.join(', ')
+        data['items'].map { |item| Sanitize.fragment(item['text']).strip }.join(', ')
       end
     end
   end

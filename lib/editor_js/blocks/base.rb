@@ -3,40 +3,45 @@ module EditorJs
     class Base
       InvalidBlockDataError = Class.new(StandardError)
       include ActionView::Helpers::TagHelper
+      include ActionView::Helpers::TextHelper
       include ERB::Util
 
-      attr_accessor :raw
+      # ActionView::Helpers::TagHelper requires output_buffer accessor
+      attr_accessor :raw, :output_buffer
 
-      def type
-        @type ||= self.class.to_s.underscore.split('/').last.gsub('_block', '')
+      def initialize(raw = nil)
+        @raw = raw
+        @content = cast_block_data_to_hash(raw.deep_dup)
+        sanitize!
       end
 
-      def initialize(block_data = nil)
-        @raw = cast_block_data_to_hash(block_data)
-      end
-
-      def data
-        raw['data']
-      end
-
-      # Define Block JSON format
+      # Define JSON format of data
       def schema
         raise NotImplementedError
       end
 
       # Render HTML
-      def render(options = {})
+      def render(_options = {})
         raise NotImplementedError
       end
 
-      # Validate block data
-      def valid?
-        JSON::Validator.validate(schema, raw)
-      end
+      # Sanitize content of data
+      def sanitize!; end
 
       # Render plain text, for full-text searching
-      def plain
-        @block_data
+      def plain; end
+
+      # Validate data
+      def valid?
+        JSON::Validator.validate(schema, data)
+      end
+
+      def type
+        @type ||= self.class.to_s.underscore.split('/').last.gsub('_block', '')
+      end
+
+      def data
+        @content['data']
       end
 
       private
@@ -54,12 +59,12 @@ module EditorJs
         raise InvalidBlockDataError, "Invalid JSON: #{str_or_hash}"
       end
 
-      def output_buffer=(value)
-        @output_buffer = value
+      def css_prefix
+        @css_prefix ||= "#{EditorJs.css_name_prefix}#{type}"
       end
 
-      def output_buffer
-        @output_buffer
+      def css_name(name = nil)
+        "#{css_prefix}#{name}"
       end
     end
   end
