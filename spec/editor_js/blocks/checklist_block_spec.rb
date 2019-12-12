@@ -6,8 +6,8 @@ RSpec.describe EditorJs::Blocks::ChecklistBlock do
       type: 'checklist',
       data: {
         items: [
-          { text: 'item 1 <b>bold</b>', checked: true },
-          { text: 'item 2', checked: false },
+          { text: 'item 1 &lt;b&gt;bold&lt;/b&gt;', checked: true },
+          { text: 'item <b>2</b>', checked: false },
           { text: 'item 3', checked: false }
         ]
       }
@@ -19,7 +19,7 @@ RSpec.describe EditorJs::Blocks::ChecklistBlock do
 
     it { expect(checklist).to be_valid }
     it { expect(checklist.render).to eq('<div class="editor_js--checklist"><input type="checkbox" disabled="disabled" checked="checked">item 1 &lt;b&gt;bold&lt;/b&gt;</input><input type="checkbox" disabled="disabled">item 2</input><input type="checkbox" disabled="disabled">item 3</input></div>') }
-    it { expect(checklist.plain).to eq('item 1 bold, item 2, item 3') }
+    it { expect(checklist.plain).to eq('item 1 <b>bold</b>, item 2, item 3') }
   end
 
   context 'with valid hash' do

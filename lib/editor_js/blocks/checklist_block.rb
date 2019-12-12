@@ -31,8 +31,14 @@ module EditorJs
         end
       end
 
+      def sanitize!
+        data['items'].each do |item|
+          item['text'] = Sanitize.fragment(item['text']).strip
+        end
+      end
+
       def plain
-        data['items'].map { |item| Sanitize.fragment(item['text']).strip }.join(', ')
+        data['items'].map { |item| decode_html(item['text']).strip }.join(', ')
       end
     end
   end

@@ -66,6 +66,14 @@ module EditorJs
       def css_name(name = nil)
         "#{css_prefix}#{name}"
       end
+
+      def html_coder
+        @html_coder ||= HTMLEntities.new
+      end
+
+      def decode_html(string)
+        html_coder.decode(string)
+      end
     end
   end
 end
