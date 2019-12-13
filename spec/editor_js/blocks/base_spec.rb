@@ -1,5 +1,5 @@
 RSpec.describe EditorJs::Blocks::Base do
-  subject(:base) { described_class.new }
+  subject(:base) { described_class.new(type: 'base') }
 
   it { expect(base.decode_html('&nbsp;').ord).to eq 32 }
   it "HTMLEntities::MAPPINGS['expanded'] should not be changed" do

@@ -14,7 +14,7 @@ module EditorJs
       end
 
       def render(_options = {})
-        content_tag(:p, class: css_name) { data['text'].html_safe }
+        content_tag(:div, class: css_name) { data['text'].html_safe }
       end
 
       def sanitize!
@@ -29,7 +29,8 @@ module EditorJs
         data['text'] = Sanitize.fragment(
           data['text'],
           elements: safe_tags.keys,
-          attributes: safe_tags.select {|k, v| v}
+          attributes: safe_tags.select {|k, v| v},
+          remove_contents: true
         )
       end
 
