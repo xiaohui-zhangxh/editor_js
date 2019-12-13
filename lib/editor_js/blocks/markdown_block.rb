@@ -2,22 +2,25 @@
 
 module EditorJs
   module Blocks
-    class HTMLwithCodeRay < Redcarpet::Render::HTML
-      def block_code(code, language)
-        CodeRay.scan(code, language || :text).div(css: :class)
-      end
-
-      def list_item(text, list_type)
-        if text.start_with?("[x]", "[X]")
-          text[0..2] = %(<input type='checkbox' checked='checked' disabled>)
-        elsif text.start_with?("[ ]")
-          text[0..2] = %(<input type='checkbox' disabled>)
-        end
-        %(<li>#{text}</li>)
-      end
-    end
-
     class MarkdownBlock < Base
+      class HTMLwithCodeRay < Redcarpet::Render::HTML
+        def block_code(code, language)
+          CodeRay.scan(code, language || :text).div(css: :class)
+        end
+
+        def list_item(text, list_type)
+          if text.start_with?("[x]", "[X]")
+            text[0..2] = %(<input type='checkbox' checked='checked' disabled>)
+          elsif text.start_with?("[ ]")
+            text[0..2] = %(<input type='checkbox' disabled>)
+          end
+          %(<li>#{text}</li>)
+        end
+      end
+
+      def sanitize!
+      end
+
       def schema
         YAML.safe_load(<<~YAML)
           type: object
