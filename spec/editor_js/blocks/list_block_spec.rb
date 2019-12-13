@@ -15,16 +15,16 @@ RSpec.describe EditorJs::Blocks::ListBlock do
   end
 
   context 'with valid string' do
-    let(:embed) { described_class.new(valid_data1.to_json) }
+    let(:list) { described_class.new(valid_data1.to_json) }
 
-    it { expect(embed).to be_valid }
-    it { expect(embed.render).to eq(%|<ol class="editor_js--list"><li>asdf&nbsp;. &lt;asdfa . asdfasdf&nbsp;</li><li>module EditorJs</li></ol>|) }
-    it { expect(embed.plain).to eq('asdf . <asdfa . asdfasdf , module EditorJs') }
+    it { expect(list).to be_valid }
+    it { expect(list.render).to eq(%|<ol class="editor_js--list"><li>asdf&nbsp;. &lt;asdfa . asdfasdf&nbsp;</li><li>module EditorJs</li></ol>|) }
+    it { expect(list.plain).to eq('asdf . <asdfa . asdfasdf , module EditorJs') }
   end
 
   context 'with valid hash' do
-    let(:embed) { described_class.new(valid_data1) }
+    let(:list) { described_class.new(valid_data1) }
 
-    it { expect(embed).to be_valid }
+    it { expect(list).to be_valid }
   end
 end
