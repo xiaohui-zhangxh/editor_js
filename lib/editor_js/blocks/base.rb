@@ -2,6 +2,7 @@ module EditorJs
   module Blocks
     class Base
       InvalidBlockDataError = Class.new(StandardError)
+      InvalidBlockTypeError = Class.new(StandardError)
       include ActionView::Helpers::TagHelper
       include ActionView::Helpers::TextHelper
       include ERB::Util
@@ -37,7 +38,7 @@ module EditorJs
       end
 
       def type
-        @type ||= self.class.to_s.underscore.split('/').last.gsub('_block', '')
+        self.class.type
       end
 
       def data
@@ -52,19 +53,39 @@ module EditorJs
         "#{css_prefix}#{name}"
       end
 
+      def output
+        @content
+      end
+
+      def self.type
+        @type ||= self.to_s.underscore.split('/').last.gsub('_block', '')
+      end
+
+      def self.inherited(parent)
+        @registry ||= {}
+        @registry[parent.type] = parent
+        super
+      end
+
+      def self.load(block_data)
+        block_data = JSON.parse(block_data) unless block_data.is_a?(Hash)
+        klass = @registry[block_data['type']]
+        raise InvalidBlockTypeError, block_data['type'] if klass.nil?
+
+        klass.new(block_data)
+      end
+
       private
 
-      def cast_block_data_to_hash(str_or_hash)
-        str_or_hash = JSON.parse(str_or_hash) if str_or_hash.is_a?(String)
-        str_or_hash = { 'type' => type } if str_or_hash.nil?
-        raise InvalidBlockDataError, str_or_hash unless str_or_hash.is_a?(Hash)
+      def cast_block_data_to_hash(block_data)
+        raise InvalidBlockDataError, block_data unless block_data.is_a?(Hash)
 
-        str_or_hash = str_or_hash.deep_stringify_keys
-        raise InvalidBlockDataError, "block type <#{str_or_hash['type']}> doesn't match <#{type}>" unless str_or_hash['type'] == type
+        block_data = block_data.deep_stringify_keys
+        raise InvalidBlockDataError, "block type <#{block_data['type']}> doesn't match <#{type}>" unless block_data['type'] == type
 
-        str_or_hash
+        block_data
       rescue JSON::ParserError => _e
-        raise InvalidBlockDataError, "Invalid JSON: #{str_or_hash}"
+        raise InvalidBlockDataError, "Invalid JSON: #{block_data}"
       end
 
       def css_prefix
