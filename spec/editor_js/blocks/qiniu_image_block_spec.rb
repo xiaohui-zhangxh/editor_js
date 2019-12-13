@@ -6,10 +6,36 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
       type: 'qiniu_image',
       data: {
         url: 'http://xxx/image.png',
-        caption: '七牛<b>图片</b>2&lt;/div&gt;',
+        caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code</small>',
         withBorder: true,
         withBackground: false,
         stretched: false
+      }
+    }
+  end
+
+  let(:valid_data2) do
+    {
+      type: 'qiniu_image',
+      data: {
+        url: 'http://xxx/image2.png',
+        caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code2</small>',
+        withBorder: true,
+        withBackground: true,
+        stretched: false
+      }
+    }
+  end
+
+  let(:valid_data3) do
+    {
+      type: 'qiniu_image',
+      data: {
+        url: 'http://xxx/image3.png',
+        caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code3</small>',
+        withBorder: false,
+        withBackground: false,
+        stretched: true
       }
     }
   end
@@ -18,8 +44,25 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     let(:qiniu_image) { described_class.new(valid_data1.to_json) }
 
     it { expect(qiniu_image).to be_valid }
-    it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><img src="http://xxx/image.png"></img><span>七牛图片2&lt;/div&gt;</span></div>|) }
-    it { expect(qiniu_image.plain).to eq('七牛图片2</div>') }
+    it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--with-border"><img src="http://xxx/image.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
+    it { expect(qiniu_image.plain).to eq('七牛2</div>') }
+  end
+
+  context 'with valid string; image style withBorder withBackground' do
+    let(:qiniu_image) { described_class.new(valid_data2.to_json) }
+
+    it { expect(qiniu_image).to be_valid }
+    it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--with-background editor_js--qiniu_image__picture--with-border"><img src="http://xxx/image2.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
+    it { expect(qiniu_image.plain).to eq('七牛2</div>') }
+  end
+
+
+  context 'with valid string; image style stretched' do
+    let(:qiniu_image) { described_class.new(valid_data3.to_json) }
+
+    it { expect(qiniu_image).to be_valid }
+    it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--stretched"><img src="http://xxx/image3.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
+    it { expect(qiniu_image.plain).to eq('七牛2</div>') }
   end
 
   context 'with valid hash' do
