@@ -5,8 +5,18 @@ RSpec.describe EditorJs::Blocks::HeaderBlock do
     {
       type: 'header',
       data: {
-        text: '圆括号的特殊语法《不知道》+ 1 ^zou 明天',
-        level: 5,
+        text: 'this is a <b>header</b> <a>hacker</a> by &lt;b&gt;me&lt;/b&gt;',
+        level: 2
+      }
+    }
+  end
+
+  let(:invalid_data1) do
+    {
+      type: 'header',
+      data: {
+        text: 'this is a <b>header</b> <a>hacker</a> by &lt;b&gt;me&lt;/b&gt;',
+        level: 7
       }
     }
   end
@@ -15,8 +25,8 @@ RSpec.describe EditorJs::Blocks::HeaderBlock do
     let(:header) { described_class.new(valid_data1.to_json) }
 
     it { expect(header).to be_valid }
-    it { expect(header.render).to eq(%|<h5 class="editor_js--header">圆括号的特殊语法《不知道》+ 1 ^zou 明天</h5>|) }
-    it {expect(header.plain).to eq('圆括号的特殊语法《不知道》+ 1 ^zou 明天') }
+    it { expect(header.render).to eq(%|<h2 class="editor_js--header">this is a header hacker by &lt;b&gt;me&lt;/b&gt;</h2>|) }
+    it { expect(header.plain).to eq('this is a header hacker by <b>me</b>') }
   end
 
   context 'with valid hash' do
@@ -24,4 +34,6 @@ RSpec.describe EditorJs::Blocks::HeaderBlock do
 
     it { expect(header).to be_valid }
   end
+
+  it { expect(described_class.new(invalid_data1)).not_to be_valid }
 end
