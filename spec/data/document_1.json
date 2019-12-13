@@ -10,7 +10,7 @@
       {
           "type" : "header",
           "data" : {
-              "text" : "testing&lt;i&gt;hello&lt;/i&gt;",
+              "text" : "testing&lt;i&gt;hello&lt;/i&gt;<small>small texty</small>",
               "level" : 2
           }
       }

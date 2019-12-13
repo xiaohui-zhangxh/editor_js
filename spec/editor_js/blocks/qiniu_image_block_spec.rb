@@ -40,16 +40,16 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     }
   end
 
-  context 'with valid string' do
-    let(:qiniu_image) { described_class.new(valid_data1.to_json) }
+  context 'with valid data' do
+    let(:qiniu_image) { described_class.new(valid_data1) }
 
     it { expect(qiniu_image).to be_valid }
     it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--with-border"><img src="http://xxx/image.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
     it { expect(qiniu_image.plain).to eq('七牛2</div>') }
   end
 
-  context 'with valid string; image style withBorder withBackground' do
-    let(:qiniu_image) { described_class.new(valid_data2.to_json) }
+  context 'with valid data; image style withBorder withBackground' do
+    let(:qiniu_image) { described_class.new(valid_data2) }
 
     it { expect(qiniu_image).to be_valid }
     it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--with-background editor_js--qiniu_image__picture--with-border"><img src="http://xxx/image2.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
@@ -57,17 +57,12 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
   end
 
 
-  context 'with valid string; image style stretched' do
-    let(:qiniu_image) { described_class.new(valid_data3.to_json) }
+  context 'with valid data; image style stretched' do
+    let(:qiniu_image) { described_class.new(valid_data3) }
 
     it { expect(qiniu_image).to be_valid }
     it { expect(qiniu_image.render).to eq(%|<div class="editor_js--qiniu_image"><div class="editor_js--qiniu_image__picture editor_js--qiniu_image__picture--stretched"><img src="http://xxx/image3.png"></img></div><div class="editor_js--qiniu_image__caption">七牛2&lt;/div&gt;</div></div>|) }
     it { expect(qiniu_image.plain).to eq('七牛2</div>') }
   end
 
-  context 'with valid hash' do
-    let(:qiniu_image) { described_class.new(valid_data1) }
-
-    it { expect(qiniu_image).to be_valid }
-  end
 end

@@ -31,20 +31,20 @@ module EditorJs
           withBackground = data['withBackground']
           stretched = data['stretched']
 
-          html_class = 'simple-image__picture'
-          html_class += ' simple-image__picture--stretched' if stretched
-          html_class += ' simple-image__picture--with-background' if withBackground
-          html_class += ' simple-image__picture--with-border' if withBorder
+          html_class = "#{css_name}__picture"
+          html_class += " #{css_name}__picture--stretched" if stretched
+          html_class += " #{css_name}__picture--with-background" if withBackground
+          html_class += " #{css_name}__picture--with-border" if withBorder
 
           html_str =  content_tag :div, class: html_class do
                         content_tag :img, '', src: url
                       end
-          html_str << content_tag(:div, caption.html_safe, class: 'simple-image__caption').html_safe
+          html_str << content_tag(:div, caption.html_safe, class: "#{css_name}__caption").html_safe
         end
       end
 
       def sanitize!
-        data['caption'] = Sanitize.fragment(data['caption'])
+        data['caption'] = Sanitize.fragment(data['caption'], remove_contents: true)
       end
 
       def plain

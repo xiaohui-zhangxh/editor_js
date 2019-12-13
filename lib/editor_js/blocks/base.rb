@@ -10,7 +10,7 @@ module EditorJs
       # ActionView::Helpers::TagHelper requires output_buffer accessor
       attr_accessor :raw, :output_buffer
 
-      def initialize(raw = nil)
+      def initialize(raw)
         @raw = raw
         @content = cast_block_data_to_hash(raw.deep_dup)
         sanitize!

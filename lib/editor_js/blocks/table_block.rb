@@ -32,7 +32,7 @@ module EditorJs
       def sanitize!
         data['content'] = data['content'].map do |row|
           row = (row || []).map do |cell_value|
-            Sanitize.fragment cell_value
+            Sanitize.fragment(cell_value, remove_contents: true)
           end
         end
       end

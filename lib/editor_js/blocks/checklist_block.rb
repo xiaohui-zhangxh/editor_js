@@ -33,7 +33,7 @@ module EditorJs
 
       def sanitize!
         data['items'].each do |item|
-          item['text'] = Sanitize.fragment(item['text']).strip
+          item['text'] = Sanitize.fragment(item['text'], remove_contents: true).strip
         end
       end
 

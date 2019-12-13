@@ -24,7 +24,7 @@ module EditorJs
       end
 
       def sanitize!
-        data['text'] = Sanitize.fragment(data['text']).strip
+        data['text'] = Sanitize.fragment(data['text'], remove_contents: true).strip
       end
 
       def plain

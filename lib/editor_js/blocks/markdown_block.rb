@@ -29,7 +29,7 @@ module EditorJs
       end
 
       def render(_options = {})
-        content_tag :div, class: "#{css_name} markdown-block markdown-body" do
+        content_tag :div, class: css_name do
           content_text = data['text'] || ''
 
           render_options = {

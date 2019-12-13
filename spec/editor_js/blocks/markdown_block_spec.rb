@@ -20,8 +20,8 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     }
   end
 
-  context 'with valid string' do
-    let(:markdown) { described_class.new(valid_data1.to_json) }
+  context 'with valid data' do
+    let(:markdown) { described_class.new(valid_data1) }
 
     it { expect(markdown).to be_valid }
     it do
@@ -45,9 +45,4 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     it { expect(markdown.plain).to eq(valid_data1[:data][:text].strip) }
   end
 
-  context 'with valid hash' do
-    let(:markdown) { described_class.new(valid_data1) }
-
-    it { expect(markdown).to be_valid }
-  end
 end

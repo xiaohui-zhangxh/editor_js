@@ -41,15 +41,18 @@ module EditorJs
           data[key] = Sanitize.fragment(
             data[key],
             elements: safe_tags.keys,
-            attributes: safe_tags.select {|k, v| v}
+            attributes: safe_tags.select {|k, v| v},
+            remove_contents: true
           )
         end
-        data['alignment'] = Sanitize.fragment data['alignment']
+        data['alignment'] = Sanitize.fragment(data['alignment'], remove_contents: true)
       end
 
       def plain
-        string = Sanitize.fragment(data['text']).strip
-        string += Sanitize.fragment(data['caption']).strip
+        string = [
+          Sanitize.fragment(data['text']).strip,
+          Sanitize.fragment(data['caption']).strip
+        ].join(', ')
         decode_html(string)
       end
     end

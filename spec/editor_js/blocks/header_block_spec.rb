@@ -21,18 +21,12 @@ RSpec.describe EditorJs::Blocks::HeaderBlock do
     }
   end
 
-  context 'with valid string' do
-    let(:header) { described_class.new(valid_data1.to_json) }
+  context 'with valid data' do
+    let(:header) { described_class.new(valid_data1) }
 
     it { expect(header).to be_valid }
     it { expect(header.render).to eq(%|<h2 class="editor_js--header">this is a   by &lt;b&gt;me&lt;/b&gt;</h2>|) }
     it { expect(header.plain).to eq('this is a   by <b>me</b>') }
-  end
-
-  context 'with valid hash' do
-    let(:header) { described_class.new(valid_data1) }
-
-    it { expect(header).to be_valid }
   end
 
   it { expect(described_class.new(invalid_data1)).not_to be_valid }

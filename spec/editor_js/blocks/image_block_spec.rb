@@ -14,8 +14,8 @@ RSpec.describe EditorJs::Blocks::ImageBlock do
     }
   end
 
-  context 'with valid string' do
-    let(:image) { described_class.new(valid_data1.to_json) }
+  context 'with valid data' do
+    let(:image) { described_class.new(valid_data1) }
 
     it { expect(image).to be_valid }
 
@@ -23,9 +23,4 @@ RSpec.describe EditorJs::Blocks::ImageBlock do
     it { expect(image.plain).to eq('this is a  <hello> world') }
   end
 
-  context 'with valid hash' do
-    let(:image) { described_class.new(valid_data1) }
-
-    it { expect(image).to be_valid }
-  end
 end

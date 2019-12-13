@@ -47,12 +47,12 @@ module EditorJs
 
       def sanitize
         %w(caption embed height service source width).each do |key|
-          data[key] = Sanitize.fragment(data[key]).strip
+          data[key] = Sanitize.fragment(data[key], remove_contents: true).strip
         end
       end
 
       def plain
-        Sanitize.fragment(data['caption']).strip
+        data['caption'].strip
       end
     end
   end

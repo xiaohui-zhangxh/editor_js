@@ -42,14 +42,15 @@ module EditorJs
           Sanitize.fragment(
             text,
             elements: safe_tags.keys,
-            attributes: safe_tags.select {|k, v| v}
+            attributes: safe_tags.select {|k, v| v},
+            remove_contents: true
           )
         end
       end
 
       def plain
         data['items'].map do |text|
-          decode_html(Sanitize.fragment(text).strip)
+          decode_html(Sanitize.fragment(text)).strip
         end.join(', ')
       end
     end
