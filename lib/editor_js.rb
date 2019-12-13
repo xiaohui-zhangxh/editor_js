@@ -24,6 +24,7 @@ require 'editor_js/blocks/paragraph_block'
 require 'editor_js/blocks/qiniu_image_block'
 require 'editor_js/blocks/quote_block'
 require 'editor_js/blocks/table_block'
+require 'editor_js/document'
 
 module EditorJs
   class << self
