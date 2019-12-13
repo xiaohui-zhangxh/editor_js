@@ -19,7 +19,7 @@ module EditorJs
       end
 
       def render(_options = {})
-        content_tag(:"h#{data['level'])}", class: css_name) do
+        content_tag(:"h#{data['level']}", class: css_name) do
           data['text'].html_safe
         end
       end

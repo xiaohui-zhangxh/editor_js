@@ -68,7 +68,8 @@ module EditorJs
       end
 
       def html_coder
-        @html_coder ||= HTMLEntities.new
+        HTMLEntities::MAPPINGS['expanded']['nbsp'] = 32
+        @html_coder ||= HTMLEntities.new(:expanded)
       end
 
       def decode_html(string)
