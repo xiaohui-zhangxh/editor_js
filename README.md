@@ -22,7 +22,15 @@ Or install it yourself as:
 
 ## Usage
 
-TODO: Write usage instructions here
+**Parse document:**
+
+```ruby
+doc = EditorJs::Document.new(editor_js_output)
+doc.render  # [String] render HTML for display
+doc.plain   # [String] render text for full-text searching
+doc.output  # [Hash] return sanitized data
+
+```
 
 ## Development
 
