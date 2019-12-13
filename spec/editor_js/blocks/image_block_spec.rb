@@ -5,23 +5,22 @@ RSpec.describe EditorJs::Blocks::ImageBlock do
     {
       type: 'image',
       data: {
-        url: 'http://assets.wedxt.com/1576156689709-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-15%2021.34.57.png',
-        caption: 'asdasdf sadfsadf &lt;asdf &gt;&lt;fff&gt;&gt;&gt; &lt;div&gt;asdf . fasf &lt;/div&gt;',
+        url: 'http://xxx/image.png',
+        caption: 'this is a <b>caption</b> &lt;hello&gt; world',
         withBorder: false,
         withBackground: false,
         stretched: false
       }
     }
   end
-  # encryped_id: ''
 
   context 'with valid string' do
     let(:image) { described_class.new(valid_data1.to_json) }
 
     it { expect(image).to be_valid }
 
-    it { expect(image.render).to eq(%|<div class="editor_js--image"><div class="simple-image__picture"><img src="http://assets.wedxt.com/1576156689709-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-15%2021.34.57.png"></img></div><div class="simple-image__caption">asdasdf sadfsadf &lt;asdf &gt;&lt;fff&gt;&gt;&gt; &lt;div&gt;asdf . fasf &lt;/div&gt;</div></div>|) }
-    it { expect(image.plain).to eq('asdasdf sadfsadf <asdf ><fff>>> <div>asdf . fasf </div>') }
+    it { expect(image.render).to eq(%|<div class="editor_js--image"><img src="http://xxx/image.png"></img><span>this is a  &lt;hello&gt; world</div>|) }
+    it { expect(image.plain).to eq('this is a  <hello> world') }
   end
 
   context 'with valid hash' do

@@ -44,6 +44,14 @@ module EditorJs
         @content['data']
       end
 
+      def decode_html(string)
+        html_decoder.decode(string)
+      end
+
+      def css_name(name = nil)
+        "#{css_prefix}#{name}"
+      end
+
       private
 
       def cast_block_data_to_hash(str_or_hash)
@@ -63,17 +71,22 @@ module EditorJs
         @css_prefix ||= "#{EditorJs.css_name_prefix}#{type}"
       end
 
-      def css_name(name = nil)
-        "#{css_prefix}#{name}"
+      def html_decoder
+        @html_decoder ||= begin
+          with_customized_html_mappings do
+            HTMLEntities::Decoder.new('expanded')
+          end
+        end
       end
 
-      def html_coder
-        HTMLEntities::MAPPINGS['expanded']['nbsp'] = 32
-        @html_coder ||= HTMLEntities.new(:expanded)
-      end
-
-      def decode_html(string)
-        html_coder.decode(string)
+      def with_customized_html_mappings
+        original_mappings = HTMLEntities::MAPPINGS['expanded']
+        customized_mappings = original_mappings.dup
+        customized_mappings['nbsp'] = 32
+        HTMLEntities::MAPPINGS['expanded'] = customized_mappings
+        yield
+      ensure
+        HTMLEntities::MAPPINGS['expanded'] = original_mappings
       end
     end
   end
