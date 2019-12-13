@@ -32,9 +32,9 @@ module EditorJs
           stretched = data['stretched']
 
           html_class = 'simple-image__picture'
-          html_class << ' simple-image__picture--stretched' if stretched
-          html_class << ' simple-image__picture--with-background' if withBackground
-          html_class << ' simple-image__picture--with-border' if withBorder
+          html_class += ' simple-image__picture--stretched' if stretched
+          html_class += ' simple-image__picture--with-background' if withBackground
+          html_class += ' simple-image__picture--with-border' if withBorder
 
           html_str =  content_tag :div, class: html_class do
                         content_tag :img, '', src: url

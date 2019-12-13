@@ -23,7 +23,7 @@ module EditorJs
         content_tag(tag, class: css_name) do
           children_tag_string = ''
           data['items'].each do |v|
-            children_tag_string << content_tag(:li, v.html_safe)
+            children_tag_string += content_tag(:li, v.html_safe)
           end
           children_tag_string.html_safe
         end
@@ -38,9 +38,9 @@ module EditorJs
           'code' => ['class']
         }
 
-        data['items'].each do |item|
-          item['text'] = Sanitize.fragment(
-            item['text'],
+        data['items'] = data['items'].map do |text|
+          Sanitize.fragment(
+            text,
             elements: safe_tags.keys,
             attributes: safe_tags.select {|k, v| v}
           )
@@ -48,7 +48,9 @@ module EditorJs
       end
 
       def plain
-        data['items'].map { |item| decode_html(item['text']).strip }.join(', ')
+        data['items'].map do |text|
+          decode_html(Sanitize.fragment(text).strip)
+        end.join(', ')
       end
     end
   end

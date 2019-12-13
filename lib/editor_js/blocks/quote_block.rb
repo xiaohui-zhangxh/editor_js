@@ -18,10 +18,13 @@ module EditorJs
       end
 
       def render(_options = {})
+        text = data['text'].html_safe
+        caption = data['caption'].presence&.html_safe
+
         content_tag :div, class: css_name do
-          data['items'].each do |item|
-            concat content_tag(:input, item['text'], type: 'checkbox', disabled: true, checked: item['checked'])
-          end
+          html_str = content_tag :div, text, class: "#{css_name}__text"
+          html_str << content_tag(:div, caption, class: "#{css_name}__caption") if caption
+          html_str
         end
       end
 
@@ -45,8 +48,9 @@ module EditorJs
       end
 
       def plain
-        str = [data['text']&.strip, data['caption']&.strip].join(', ')
-        decode_html(str)
+        string = Sanitize.fragment(data['text']).strip
+        string += Sanitize.fragment(data['caption']).strip
+        decode_html(string)
       end
     end
   end
