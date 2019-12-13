@@ -13,17 +13,13 @@ module EditorJs
             embed:
               type: string
             height:
-              type:
-              - number
-              - string
+              type: string
             service:
               type: string
             source:
               type: string
             width:
-              type:
-              - number
-              - string
+              type: string
           required:
           - embed
           - service
@@ -45,7 +41,7 @@ module EditorJs
         end
       end
 
-      def sanitize
+      def sanitize!
         %w(caption embed height service source width).each do |key|
           data[key] = Sanitize.fragment(data[key], remove_contents: true).strip
         end
