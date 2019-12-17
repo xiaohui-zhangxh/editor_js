@@ -18,8 +18,7 @@ module EditorJs
         end
       end
 
-      def sanitize!
-      end
+      def sanitize!; end
 
       def schema
         YAML.safe_load(<<~YAML)
