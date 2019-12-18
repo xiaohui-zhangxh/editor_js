@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    editor_js (0.2.0)
+    editor_js (0.2.1)
       actionview (>= 4)
       activesupport (>= 4)
       coderay (~> 1.1, >= 1.1.2)
@@ -116,4 +116,4 @@ DEPENDENCIES
   simplecov (~> 0.17.1)
 
 BUNDLED WITH
-   2.1.0
+   2.0.2
