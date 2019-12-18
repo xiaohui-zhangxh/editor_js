@@ -46,7 +46,9 @@ module EditorJs
     def plain
       return @renderred_plain if instance_variable_defined?(:@renderred_plain)
 
-      @renderred_plain = valid? ? @blocks.map(&:plain).join('. ') : ''
+      @renderred_plain = valid? && @blocks.map(&:plain).select do |text|
+        text if text.present?
+      end.join('. ') || ''
     end
 
     def output
