@@ -81,7 +81,7 @@ module EditorJs
         raise InvalidBlockDataError, block_data unless block_data.is_a?(Hash)
 
         block_data = block_data.deep_stringify_keys
-        raise InvalidBlockDataError, "block type <#{block_data['type']}> doesn't match <#{type}>" unless block_data['type'] == type
+        raise InvalidBlockDataError, "block type <#{block_data['type']}> doesn't match <#{type}>" unless block_data['type'].underscore == type
 
         block_data
       rescue JSON::ParserError => _e
