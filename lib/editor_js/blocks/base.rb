@@ -62,17 +62,20 @@ module EditorJs
       end
 
       def self.inherited(parent)
-        @registry ||= {}
-        @registry[parent.type] = parent
+        ::EditorJs::Blocks::Base.registry[parent.type] = parent
         super
       end
 
       def self.load(block_data)
         block_data = JSON.parse(block_data) unless block_data.is_a?(Hash)
-        klass = @registry[block_data['type']]
+        klass = ::EditorJs::Blocks::Base.registry[block_data['type'].underscore]
         raise InvalidBlockTypeError, block_data['type'] if klass.nil?
 
         klass.new(block_data)
+      end
+
+      def self.registry
+        @registry ||= {}
       end
 
       private
