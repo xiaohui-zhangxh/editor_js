@@ -85,8 +85,8 @@ module EditorJs
 
         block_data = block_data.deep_stringify_keys
         unless block_data['type'].underscore == type
-          raise InvalidBlockDataError, \
-          "block type <#{block_data['type']}> doesn't match <#{type}>"
+          raise InvalidBlockDataError,\
+                "block type <#{block_data['type']}> doesn't match <#{type}>"
         end
 
         block_data
