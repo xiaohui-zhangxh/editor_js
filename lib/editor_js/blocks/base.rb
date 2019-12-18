@@ -7,6 +7,8 @@ module EditorJs
       include ActionView::Helpers::TextHelper
       include ERB::Util
 
+      require 'active_support/core_ext/string/inflections'
+
       # ActionView::Helpers::TagHelper requires output_buffer accessor
       attr_accessor :raw, :output_buffer
 
