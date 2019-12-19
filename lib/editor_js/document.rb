@@ -40,7 +40,7 @@ module EditorJs
     def render
       return @renderred_html if instance_variable_defined?(:@renderred_html)
 
-      @renderred_html = valid? ? @blocks.map(&:render).join : ''
+      @renderred_html = valid? ? @blocks.map(&:render).join.html_safe : ''
     end
 
     def plain
