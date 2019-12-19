@@ -15,6 +15,10 @@ module EditorJs
             type: object
         version:
           type: string
+      required:
+      - time
+      - blocks
+      - version
     YAML
 
     def initialize(str_or_hash)
