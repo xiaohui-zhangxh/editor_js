@@ -25,9 +25,13 @@ module EditorJs
 
       def render(_options = {})
         content_tag :div, class: css_name do
-          data['items'].each do |item|
-            concat content_tag(:input, item['text'], type: 'checkbox', disabled: true, checked: item['checked'])
-          end
+          data['items'].map do |item|
+            content_tag(:div, class: css_name('__warrper')) do
+              html_str = content_tag(:input, nil, type: 'checkbox', disabled: true, checked: item['checked'])
+              html_str += content_tag(:label, item['text'])
+              html_str.html_safe
+            end.html_safe
+          end.join.html_safe
         end
       end
 
