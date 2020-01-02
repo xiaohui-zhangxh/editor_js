@@ -43,7 +43,11 @@ module EditorJs
 
       def sanitize!
         %w(caption embed height service source width).each do |key|
-          data[key] = Sanitize.fragment(data[key], remove_contents: true).strip
+          str = Sanitize.fragment(data[key], remove_contents: true).strip
+          if %w(embed service source).include?(key)
+            str.gsub('&amp;', '&')
+          end
+          data[key] = str
         end
       end
 

@@ -44,7 +44,13 @@ module EditorJs
       end
 
       def sanitize!
-        data['caption'] = Sanitize.fragment(data['caption'], remove_contents: true)
+        %w(caption url).each do |key|
+          str = Sanitize.fragment(data[key], remove_contents: true).strip
+          if key == 'url'
+            str.gsub('&amp;', '&')
+          end
+          data[key] = str
+        end
       end
 
       def plain
