@@ -1,7 +1,7 @@
 PATH
   remote: .
   specs:
-    editor_js (0.2.2)
+    editor_js (0.2.3)
       actionview (>= 4)
       activesupport (>= 4)
       coderay (~> 1.1, >= 1.1.2)
@@ -98,7 +98,7 @@ GEM
       simplecov-html (~> 0.10.0)
     simplecov-html (0.10.2)
     thread_safe (0.3.6)
-    tzinfo (1.2.5)
+    tzinfo (1.2.6)
       thread_safe (~> 0.1)
     unicode-display_width (1.6.0)
     zeitwerk (2.2.2)
