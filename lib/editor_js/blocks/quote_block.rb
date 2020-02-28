@@ -34,7 +34,8 @@ module EditorJs
           'i' => nil,
           'a' => ['href'],
           'mark' => ['class'],
-          'code' => ['class']
+          'code' => ['class'],
+          'br' => nil
         }
 
         %w(text caption).each do |key|
@@ -42,7 +43,7 @@ module EditorJs
             data[key],
             elements: safe_tags.keys,
             attributes: safe_tags.select {|k, v| v},
-            remove_contents: true
+            remove_contents: false
           )
         end
         data['alignment'] = Sanitize.fragment(data['alignment'], remove_contents: true)
