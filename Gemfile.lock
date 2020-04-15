@@ -65,7 +65,7 @@ GEM
     rails-html-sanitizer (1.3.0)
       loofah (~> 2.3)
     rainbow (3.0.0)
-    rake (10.5.0)
+    rake (13.0.1)
     redcarpet (3.5.0)
     rspec (3.9.0)
       rspec-core (~> 3.9.0)
@@ -110,7 +110,7 @@ DEPENDENCIES
   bundler (~> 2.0)
   editor_js!
   pry (~> 0.12.2)
-  rake (~> 10.0)
+  rake (~> 13.0)
   rspec (~> 3.0)
   rubocop (~> 0.77.0)
   simplecov (~> 0.17.1)
