@@ -28,7 +28,7 @@ module EditorJs
           data['items'].map do |item|
             content_tag(:div, class: css_name('__warrper')) do
               html_str = content_tag(:input, nil, type: 'checkbox', disabled: true, checked: item['checked'])
-              html_str += content_tag(:label, item['text'])
+              html_str += content_tag(:label, item['text'].html_safe)
               html_str.html_safe
             end.html_safe
           end.join.html_safe
@@ -36,8 +36,21 @@ module EditorJs
       end
 
       def sanitize!
+        safe_tags = {
+          'b' => nil,
+          'i' => nil,
+          'a' => ['href'],
+          'mark' => ['class'],
+          'code' => ['class']
+        }
+
         data['items'].each do |item|
-          item['text'] = Sanitize.fragment(item['text'], remove_contents: true).strip
+          item['text'] = Sanitize.fragment(
+            item['text'],
+            elements: safe_tags.keys,
+            attributes: safe_tags.select {|k, v| v},
+            remove_contents: true
+          )
         end
       end
 
