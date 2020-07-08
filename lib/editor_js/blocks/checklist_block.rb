@@ -39,6 +39,8 @@ module EditorJs
         safe_tags = {
           'b' => nil,
           'i' => nil,
+          'u' => ['class'],
+          'del' => ['class'],
           'a' => ['href'],
           'mark' => ['class'],
           'code' => ['class']
