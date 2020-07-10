@@ -14,7 +14,7 @@ RSpec.describe EditorJs::Blocks::ParagraphBlock do
     {
       type: 'paragraph',
       data: {
-        'text': "第一短话需要居中",
+        'text': "这是一段居中的文字",
         'alignment': 'align-center'
       }
     }
@@ -32,7 +32,7 @@ RSpec.describe EditorJs::Blocks::ParagraphBlock do
     let(:paragraph) { described_class.new(valid_data2) }
 
     it { expect(paragraph).to be_valid }
-    it { expect(paragraph.render).to eq(%|<div class="editor_js--paragraph editor_js--paragraph__align-center">第一短话需要居中</div>|) }
-    it { expect(paragraph.plain).to eq("第一短话需要居中") }
+    it { expect(paragraph.render).to eq(%|<div class="editor_js--paragraph editor_js--paragraph__align-center">这是一段居中的文字</div>|) }
+    it { expect(paragraph.plain).to eq("这是一段居中的文字") }
   end
 end
