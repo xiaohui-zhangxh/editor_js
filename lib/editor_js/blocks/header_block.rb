@@ -13,6 +13,12 @@ module EditorJs
             level:
               type: number
               enum: [1,2,3,4,5,6]
+            alignment:
+              type: string
+              enum:
+                - align-left
+                - align-center
+                - align-right
           required:
           - text
           - level
@@ -20,7 +26,15 @@ module EditorJs
       end
 
       def render(_options = {})
-        content_tag(:"h#{data['level']}", data['text'].html_safe, class: css_name)
+        alignment = data['alignment']
+        class_name_str = css_name
+        if alignment.present?
+          class_name_str = [
+            class_name_str,
+            css_name("__#{alignment}")
+          ].join(' ')
+        end
+        content_tag(:"h#{data['level']}", data['text'].html_safe, class: class_name_str)
       end
 
       def sanitize!
