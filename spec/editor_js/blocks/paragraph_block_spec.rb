@@ -10,6 +10,16 @@ RSpec.describe EditorJs::Blocks::ParagraphBlock do
     }
   end
 
+  let(:valid_data2) do
+    {
+      type: 'paragraph',
+      data: {
+        'text': "这是一段居中的文字",
+        'alignment': 'align-center'
+      }
+    }
+  end
+
   context 'with valid data' do
     let(:paragraph) { described_class.new(valid_data1) }
 
@@ -18,4 +28,11 @@ RSpec.describe EditorJs::Blocks::ParagraphBlock do
     it { expect(paragraph.plain).to eq("this is a paragraph <div class='mr-1'>hello</div> world") }
   end
 
+  context 'with valid data' do
+    let(:paragraph) { described_class.new(valid_data2) }
+
+    it { expect(paragraph).to be_valid }
+    it { expect(paragraph.render).to eq(%|<div class="editor_js--paragraph editor_js--paragraph__align-center">这是一段居中的文字</div>|) }
+    it { expect(paragraph.plain).to eq("这是一段居中的文字") }
+  end
 end

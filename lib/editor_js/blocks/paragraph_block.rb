@@ -10,11 +10,25 @@ module EditorJs
           properties:
             text:
               type: string
+            alignment:
+              type: string
+              enum:
+                - align-left
+                - align-center
+                - align-right
         YAML
       end
 
       def render(_options = {})
-        content_tag(:div, class: css_name) { data['text'].html_safe }
+        alignment = data['alignment']
+        class_name_str = css_name
+        if alignment.present?
+          class_name_str = [
+            class_name_str,
+            css_name("__#{alignment}")
+          ].join(' ')
+        end
+        content_tag(:div, class: class_name_str) { data['text'].html_safe }
       end
 
       def sanitize!
