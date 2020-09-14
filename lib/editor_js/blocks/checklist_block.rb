@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # checklist block
     class ChecklistBlock < Base
       def schema
         YAML.safe_load(<<~YAML)

@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # embed block
     class EmbedBlock < Base
       def schema
         YAML.safe_load(<<~YAML)

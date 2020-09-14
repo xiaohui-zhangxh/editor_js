@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # paragraph block
     class ParagraphBlock < Base
       def schema
         YAML.safe_load(<<~YAML)
