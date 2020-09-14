@@ -29,16 +29,35 @@ module EditorJs
         end
       end
 
+      def safe_tags
+        {
+          'b' => nil,
+          'i' => nil,
+          'u' => ['class'],
+          'del' => ['class'],
+          'a' => ['href'],
+          'mark' => ['class'],
+          'code' => ['class'],
+          'br' => nil
+        }
+      end
+
       def sanitize!
         data['content'] = data['content'].map do |row|
-          row = (row || []).map do |cell_value|
-            Sanitize.fragment(cell_value, remove_contents: true)
+          (row || []).map do |cell_value|
+            Sanitize.fragment(
+              cell_value,
+              elements: safe_tags.keys,
+              attributes: safe_tags.select { |_k, v| v },
+              remove_contents: false
+            )
           end
         end
       end
 
       def plain
-        decode_html data['content'].flatten.join(', ').gsub(/(, )+/, ', ')
+        str = data['content'].flatten.join(', ')
+        decode_html Sanitize.fragment(str).gsub(/(, )+/, ', ').strip
       end
     end
   end

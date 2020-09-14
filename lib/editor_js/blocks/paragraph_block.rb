@@ -31,8 +31,8 @@ module EditorJs
         content_tag(:div, class: class_name_str) { data['text'].html_safe }
       end
 
-      def sanitize!
-        safe_tags = {
+      def safe_tags
+        {
           'b' => nil,
           'i' => nil,
           'u' => ['class'],
@@ -41,11 +41,13 @@ module EditorJs
           'mark' => ['class'],
           'code' => ['class']
         }
+      end
 
+      def sanitize!
         data['text'] = Sanitize.fragment(
           data['text'],
           elements: safe_tags.keys,
-          attributes: safe_tags.select {|k, v| v},
+          attributes: safe_tags.select { |_k, v| v },
           remove_contents: true
         )
       end

@@ -35,8 +35,8 @@ module EditorJs
         end
       end
 
-      def sanitize!
-        safe_tags = {
+      def safe_tags
+        {
           'b' => nil,
           'i' => nil,
           'u' => ['class'],
@@ -45,12 +45,14 @@ module EditorJs
           'mark' => ['class'],
           'code' => ['class']
         }
+      end
 
+      def sanitize!
         data['items'].each do |item|
           item['text'] = Sanitize.fragment(
             item['text'],
             elements: safe_tags.keys,
-            attributes: safe_tags.select {|k, v| v},
+            attributes: safe_tags.select { |_k, v| v },
             remove_contents: true
           )
         end
