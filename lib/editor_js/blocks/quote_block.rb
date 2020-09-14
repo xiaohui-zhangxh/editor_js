@@ -44,7 +44,7 @@ module EditorJs
           data[key] = Sanitize.fragment(
             data[key],
             elements: safe_tags.keys,
-            attributes: safe_tags.select {|k, v| v},
+            attributes: safe_tags.select { |_k, v| v },
             remove_contents: false
           )
         end
