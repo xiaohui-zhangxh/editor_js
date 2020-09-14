@@ -29,8 +29,8 @@ module EditorJs
         end
       end
 
-      def sanitize!
-        safe_tags = {
+      def safe_tags
+        {
           'b' => nil,
           'i' => nil,
           'u' => ['class'],
@@ -40,9 +40,11 @@ module EditorJs
           'code' => ['class'],
           'br' => nil
         }
+      end
 
+      def sanitize!
         data['content'] = data['content'].map do |row|
-          row = (row || []).map do |cell_value|
+          (row || []).map do |cell_value|
             Sanitize.fragment(
               cell_value,
               elements: safe_tags.keys,
