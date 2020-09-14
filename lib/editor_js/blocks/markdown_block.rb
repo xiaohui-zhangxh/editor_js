@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # markdown block
     class MarkdownBlock < Base
       class HTMLwithCodeRay < Redcarpet::Render::HTML
         def block_code(code, language)

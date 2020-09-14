@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # delimiter block
     class DelimiterBlock < Base
       def schema
         YAML.safe_load(<<~YAML)

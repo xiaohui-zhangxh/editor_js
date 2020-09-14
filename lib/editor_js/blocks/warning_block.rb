@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # warning block
     class WarningBlock < Base
       def schema
         YAML.safe_load(<<~YAML)

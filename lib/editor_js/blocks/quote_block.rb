@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # quote block
     class QuoteBlock < Base
       def schema
         YAML.safe_load(<<~YAML)

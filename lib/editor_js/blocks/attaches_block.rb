@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # attaches block
     class AttachesBlock < Base
       include ActiveSupport::NumberHelper
 

@@ -2,6 +2,7 @@
 
 module EditorJs
   module Blocks
+    # table block
     class TableBlock < Base
       def schema
         YAML.safe_load(<<~YAML)
