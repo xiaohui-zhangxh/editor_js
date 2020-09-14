@@ -42,7 +42,6 @@ module EditorJs
       end
 
       def sanitize!
-
         data['items'] = data['items'].map do |text|
           Sanitize.fragment(
             text,
