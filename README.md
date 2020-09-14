@@ -2,9 +2,7 @@
 
 [![Gem Version](https://badge.fury.io/rb/editor_js.svg)](https://badge.fury.io/rb/editor_js) [![Build Status](https://travis-ci.org/xiaohui-zhangxh/editor_js.svg?branch=master)](https://travis-ci.org/xiaohui-zhangxh/editor_js) [![Maintainability](https://api.codeclimate.com/v1/badges/e26bf8e27fb3a33735fd/maintainability)](https://codeclimate.com/github/xiaohui-zhangxh/editor_js/maintainability) [![Test Coverage](https://api.codeclimate.com/v1/badges/e26bf8e27fb3a33735fd/test_coverage)](https://codeclimate.com/github/xiaohui-zhangxh/editor_js/test_coverage) ![Downloads](https://ruby-gem-downloads-badge.herokuapp.com/editor_js?type=total)
 
-Welcome to your new gem! In this directory, you'll find the files you need to be able to package up your Ruby library into a gem. Put your Ruby code in the file `lib/editor_js`. To experiment with that code, run `bin/console` for an interactive prompt.
-
-TODO: Delete this and the text above, and describe your gem
+A Ruby renderer for EditorJS https://editorjs.io/
 
 ## Installation
 
