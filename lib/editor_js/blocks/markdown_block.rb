@@ -1,6 +1,4 @@
 # frozen_string_literal: true
-require 'katex'
-
 module EditorJs
   module Blocks
     # markdown block
@@ -9,45 +7,23 @@ module EditorJs
         include ActionView::Helpers::TagHelper
 
         def block_code(code, language)
-          if language.in?(%w[math latex])
-            %(<div class='math-block'>#{Katex.render(code, display_mode: false) rescue code}</div>)
+          if %w[math latex].include?(language)
+            math_block_tag(code)
           else
             CodeRay.scan(code, language || :text).div(css: :class)
           end
         end
 
         def paragraph(text)
-          %(<p>#{text_to_latex_html(text)}</p>)
+          str = text.split(/(<code>.+<\/code>)/).map do |x|
+            match_latex_code_to_html(x)
+          end.join
+
+          %(<p>#{str}</p>)
         end
 
         def header(text, header_level)
-          content_tag(:"h#{header_level}", text_to_latex_html(text).html_safe)
-        end
-
-        # $$ :block
-        # $  :inline
-        def text_to_latex_html(text, block = true)
-          if block
-            text =~ /(\$\$[^\s][^\n]+[^\s]\$\$)/
-            str = $1
-            text_to_latex_html(text, false) if str.nil?
-
-            latex_str = str.sub(/^\$\$/, '')
-            latex_str = latex_str.sub(/\$\$$/, '')
-            text.sub!(str, Katex.render(latex_str.html_safe, display_mode: true))
-            text_to_latex_html(text)
-          else
-            text =~ /(\$[^\s][^\n]+[^\s]\$)/
-            str = $1
-            text if str.nil?
-
-            latex_str = str.sub(/^\$/, '')
-            latex_str = latex_str.sub(/\$$/, '')
-            text.sub!(str, Katex.render(latex_str.html_safe, display_mode: false))
-            text_to_latex_html(text, false)
-          end
-        rescue
-          text
+          content_tag(:"h#{header_level}", match_latex_code_to_html(text).html_safe)
         end
 
         def list_item(text, list_type)
@@ -59,11 +35,38 @@ module EditorJs
           %(<li>#{text}</li>)
         end
 
-        def codespan(code)
-          if code.start_with?("$$") and code.end_with?("$$")
-            code.gsub!(/\$\$/, '\$\$')
+        def match_latex_code_to_html(text, block = true)
+          return text if text.start_with?('<code>') && text.end_with?('</code>')
+
+          if block
+            text =~ /(\$\$[^\n|\$\$]+\$\$)/
+            str = $1
+            match_latex_code_to_html(text, false) if str.nil? || str.include?('<code>')
+
+            latex_str = str.sub(/^\$\$/, '')
+            latex_str = latex_str.sub(/\$\$$/, '')
+            text.sub!(str, math_block_tag(latex_str))
+            match_latex_code_to_html(text)
+          else
+            text =~ /[^\\](\$[^\n|\$]+[^\\]\$)/
+            str = $1
+            text if str.nil? || str.include?('<code>')
+
+            latex_str = str.sub(/^\$/, '')
+            latex_str = latex_str.sub(/\$$/, '')
+            text.sub!(str, math_block_tag(latex_str, false))
+            match_latex_code_to_html(text, false)
           end
-          %(<code>#{code}</code>)
+        rescue
+          text
+        end
+
+        def math_block_tag(text, block = true)
+          if block
+            content_tag(:div, text, class: 'markdown_math-block').html_safe
+          else
+            content_tag(:span, text, class: 'markdown_math-inline_block').html_safe
+          end
         end
       end
 
