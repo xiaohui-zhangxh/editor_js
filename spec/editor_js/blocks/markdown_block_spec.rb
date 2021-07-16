@@ -35,15 +35,18 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
         *斜体*
 
         ~~这是啥~~
+
+        $1+1=2$
+
+        ```math
+        c = \pm \sqrt{a^2 + b^2}
+        ```
+
+        $$c = \pm \sqrt{a^3 + b^5}$$
         MARKDOWN
       }
     }
   end
-
-
-
-
-
 
   context 'with valid data' do
     let(:markdown) { described_class.new(valid_data1) }
@@ -55,9 +58,7 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <li>nihao
       </li><li>zaijian
       </li></ul>
-
-      <h4 id="part-3786ddf3e2c1f26">来投票</h4>
-
+      <h4>来投票</h4>
       <ul>
       <li><input type='checkbox' disabled> 投票
       </li><li><input type='checkbox' checked='checked' disabled> 不投票
@@ -72,9 +73,7 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
         <div class="code"><pre><span class="tag">&lt;h1&gt;</span>This is header<span class="tag">&lt;/h1&gt;</span>
       </pre></div>
       </div>
-
       <p>plain text</p>
-
       <table><thead>
       <tr>
       <th>字段</th>
@@ -90,15 +89,8 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <td></td>
       </tr>
       </tbody></table>
-
-      <p>++新消息++</p>
-
-      <p><strong>撒地方</strong></p>
-
-      <p><em>斜体</em></p>
-
-      <p><del>这是啥</del></p>
-      </div>
+      <p>++新消息++</p><p><strong>撒地方</strong></p><p><em>斜体</em></p><p><del>这是啥</del></p><p>$1+1=2$</p><div class="markdown_math-block">c = pm  qrt{a^2 + b^2}
+      </div><p><div class="markdown_math-block">c = pm  qrt{a^3 + b^5}</div></p></div>
       HTML
       expect(markdown.render).to eq(html)
     end
