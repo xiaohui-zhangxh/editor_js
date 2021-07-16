@@ -7,7 +7,7 @@ PATH
       coderay (~> 1.1, >= 1.1.2)
       htmlentities (~> 4.3, >= 4.3.4)
       json-schema (~> 2)
-      redcarpet (~> 3.5)
+      redcarpet (~> 3.5, >= 3.5.1)
       sanitize (~> 5.1)
 
 GEM

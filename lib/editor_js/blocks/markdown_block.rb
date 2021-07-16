@@ -6,6 +6,7 @@ module EditorJs
     class MarkdownBlock < Base
       class HTMLwithCodeRay < Redcarpet::Render::HTML
         include ActionView::Helpers::TagHelper
+        include ERB::Util
 
         def block_code(code, language)
           if %w[math latex].include?(language)
@@ -28,6 +29,10 @@ module EditorJs
         end
 
         def list_item(text, _list_type)
+          text = text.split(%r{(<code>.+<\/code>)}).map do |x|
+            match_latex_code_to_html(x)
+          end.join
+
           if text.start_with?('[x]', '[X]')
             text[0..2] = %(<input type='checkbox' checked='checked' disabled>)
           elsif text.start_with?('[ ]')
@@ -51,7 +56,7 @@ module EditorJs
             text.sub!(str, math_block_tag(latex_str))
             match_latex_code_to_html(text)
           else
-            text =~ /[^\\](\$[^\n|\$]+[^\\]\$)/
+            text =~ /[^\\]?(\$[^\n|\$]+\$)/
             str = Regexp.last_match(1)
             return text if str.nil? || str.include?('<code>')
 
@@ -63,11 +68,13 @@ module EditorJs
         end
 
         def math_block_tag(text, block = true)
-          if block
-            content_tag(:div, text, class: 'markdown_math-block').html_safe
-          else
-            content_tag(:span, text, class: 'markdown_math-inline_block').html_safe
-          end
+          tag = block ? :div : :span
+          css_name = block ? 'markdown_math-block' : 'markdown_math-inline_block'
+          content_tag(
+            tag,
+            url_encode(text.to_s),
+            class: css_name
+          )
         end
       end
 
@@ -83,10 +90,22 @@ module EditorJs
         YAML
       end
 
+      def math_str_encode(text)
+        text.split(/(\$\$.*\$\$|\$[^\n]*\$)/).map do |str|
+          if str.match?(/(^\$\$.*\$\$$|^\$.*\$$)/)
+            str.gsub!(/\\/, '\\\\\\\\')
+          end
+          str
+        end.join
+      end
+
       def render(_options = {})
         content_tag :div, class: css_name do
           content_text = data['text'] || ''
-
+          content_text = content_text.split(/(```.*```|`[^\n]*`)/).map do |str|
+            str = math_str_encode(str) unless str.match?(/(^```.*```$|^`.*`$)/)
+            str
+          end.join
           render_options = {
             escape_html: true,
             hard_wrap: true,

@@ -89,8 +89,7 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <td></td>
       </tr>
       </tbody></table>
-      <p>++新消息++</p><p><strong>撒地方</strong></p><p><em>斜体</em></p><p><del>这是啥</del></p><p>$1+1=2$</p><div class="markdown_math-block">c = pm  qrt{a^2 + b^2}
-      </div><p><div class="markdown_math-block">c = pm  qrt{a^3 + b^5}</div></p></div>
+      <p>++新消息++</p><p><strong>撒地方</strong></p><p><em>斜体</em></p><p><del>这是啥</del></p><p><span class="markdown_math-inline_block">1%2B1%3D2</span></p><div class="markdown_math-block">c%20%3D%20pm%20%20qrt%7Ba%5E2%20%2B%20b%5E2%7D%0A</div><p><div class="markdown_math-block">c%20%3D%20pm%20%20qrt%7Ba%5E3%20%2B%20b%5E5%7D</div></p></div>
       HTML
       expect(markdown.render).to eq(html)
     end
