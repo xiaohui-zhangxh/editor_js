@@ -1,4 +1,5 @@
 # frozen_string_literal: true
+
 module EditorJs
   module Blocks
     # markdown block
@@ -15,7 +16,7 @@ module EditorJs
         end
 
         def paragraph(text)
-          str = text.split(/(<code>.+<\/code>)/).map do |x|
+          str = text.split(%r{(<code>.+<\/code>)}).map do |x|
             match_latex_code_to_html(x)
           end.join
 
@@ -26,10 +27,10 @@ module EditorJs
           content_tag(:"h#{header_level}", match_latex_code_to_html(text).html_safe)
         end
 
-        def list_item(text, list_type)
-          if text.start_with?("[x]", "[X]")
+        def list_item(text, _list_type)
+          if text.start_with?('[x]', '[X]')
             text[0..2] = %(<input type='checkbox' checked='checked' disabled>)
-          elsif text.start_with?("[ ]")
+          elsif text.start_with?('[ ]')
             text[0..2] = %(<input type='checkbox' disabled>)
           end
           %(<li>#{text}</li>)
@@ -40,8 +41,10 @@ module EditorJs
 
           if block
             text =~ /(\$\$[^\n|\$\$]+\$\$)/
-            str = $1
-            match_latex_code_to_html(text, false) if str.nil? || str.include?('<code>')
+            str = Regexp.last_match(1)
+            if str.nil? || str.include?('<code>')
+              return match_latex_code_to_html(text, false)
+            end
 
             latex_str = str.sub(/^\$\$/, '')
             latex_str = latex_str.sub(/\$\$$/, '')
@@ -49,16 +52,14 @@ module EditorJs
             match_latex_code_to_html(text)
           else
             text =~ /[^\\](\$[^\n|\$]+[^\\]\$)/
-            str = $1
-            text if str.nil? || str.include?('<code>')
+            str = Regexp.last_match(1)
+            return text if str.nil? || str.include?('<code>')
 
             latex_str = str.sub(/^\$/, '')
             latex_str = latex_str.sub(/\$$/, '')
             text.sub!(str, math_block_tag(latex_str, false))
             match_latex_code_to_html(text, false)
           end
-        rescue
-          text
         end
 
         def math_block_tag(text, block = true)
