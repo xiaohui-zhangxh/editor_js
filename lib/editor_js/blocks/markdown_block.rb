@@ -17,6 +17,7 @@ module EditorJs
         end
 
         def paragraph(text)
+          # 按code标签分割，若为非code标签的文本提取公式
           str = text.split(%r{(<code>.+<\/code>)}).map do |x|
             match_latex_code_to_html(x)
           end.join
@@ -41,25 +42,30 @@ module EditorJs
           %(<li>#{text}</li>)
         end
 
+        # 从非code标签中提取公式
         def match_latex_code_to_html(text, block = true)
           return text if text.start_with?('<code>') && text.end_with?('</code>')
 
           if block
+            # 匹配$$ $$间的字符，并中间不可包含换行符，$不为\$
             text =~ /(\$\$[^\n|\$\$]+\$\$)/
             str = Regexp.last_match(1)
             if str.nil? || str.include?('<code>')
               return match_latex_code_to_html(text, false)
             end
 
+            # 去掉$，内容已经提取出来，由替代标签包裹
             latex_str = str.sub(/^\$\$/, '')
             latex_str = latex_str.sub(/\$\$$/, '')
             text.sub!(str, math_block_tag(latex_str))
             match_latex_code_to_html(text)
           else
+            # 匹配$ $间的字符，并中间不可包含换行符, $不为\$
             text =~ /[^\\]?(\$[^\n|\$]+\$)/
             str = Regexp.last_match(1)
             return text if str.nil? || str.include?('<code>')
 
+            # 去掉$，内容已经提取出来，由替代标签包裹
             latex_str = str.sub(/^\$/, '')
             latex_str = latex_str.sub(/\$$/, '')
             text.sub!(str, math_block_tag(latex_str, false))
@@ -67,6 +73,8 @@ module EditorJs
           end
         end
 
+        # 使用特定标签包裹公式，便于前端提取渲染
+        # 由于会在前端浏览器中渲染，防止浏览器渲染公式代码 所以url_encode一下
         def math_block_tag(text, block = true)
           tag = block ? :div : :span
           css_name = block ? 'markdown_math-block' : 'markdown_math-inline_block'
@@ -90,7 +98,12 @@ module EditorJs
         YAML
       end
 
+      # 输入非``` `包裹的文本数据
+      # 输出转换斜线，由于Redcarpet处理斜线有问题和输出到前端的斜线期望原样输出
+      # 例如: 用户输入：$\tiny 萌萌哒\\$ -> markdown_block得到的： "\\tiny 萌萌哒\\\\" -> 期望输出："\\tiny 萌萌哒\\\\"
+      # 但在markdown_block得到的后在Redcarpet转换时会出现问题，所以需要把斜线转换一下
       def math_str_encode(text)
+        # 匹配
         text.split(/(\$\$.*\$\$|\$[^\n]*\$)/).map do |str|
           if str.match?(/(^\$\$.*\$\$$|^\$.*\$$)/)
             str.gsub!(/\\/, '\\\\\\\\')
@@ -102,7 +115,10 @@ module EditorJs
       def render(_options = {})
         content_tag :div, class: css_name do
           content_text = data['text'] || ''
+          # 按``` `包裹的文本数据拆分为数组，
+          # ``` `包裹的不做处理，其他的处理公式内斜线问题
           content_text = content_text.split(/(```.*```|`[^\n]*`)/).map do |str|
+            # 匹配非``` `包裹的文本数据
             str = math_str_encode(str) unless str.match?(/(^```.*```$|^`.*`$)/)
             str
           end.join
