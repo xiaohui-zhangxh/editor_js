@@ -3,6 +3,15 @@ SimpleCov.start
 
 require "bundler/setup"
 require 'pry'
+
+# Make fake Rails Engine to pass Katex testing
+module Rails
+  class Engine
+    def self.initializer(*)
+    end
+  end
+end
+
 require "editor_js"
 
 RSpec.configure do |config|
