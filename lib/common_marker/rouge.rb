@@ -1,6 +1,8 @@
 require 'common_marker/custom_html_render'
 
+# frozen_string_literal: true
 module CommonMarker
+  # rouge
   module Rouge
     module_function
 
@@ -16,19 +18,6 @@ module CommonMarker
       doc = render_doc(text, cmark_options, extensions, **cmr_options)
       CommonMarker::CustomHtmlRenderer.new(options: render_options, extensions: extensions).render(doc)
       # doc.to_html(render_options)
-    end
-
-    class MyHtmlRenderer < CommonMarker::HtmlRenderer
-      def tasklist(node)
-        return '' unless tasklist?(node)
-
-        state = if checked?(node)
-                  'checked="" disabled=""'
-                else
-                  'disabled=""'
-                end
-        " class=\"task-list-item\"><input type=\"checkbox\" #{state} /"
-      end
     end
 
     def process_ast(ast, cmr_options)
@@ -65,9 +54,7 @@ module CommonMarker
             node.string_content,
             ::Sanitize::Config.merge(
               ::Sanitize::Config::BASIC,
-              {
-                remove_contents: true
-              }
+              remove_contents: true
             )
           )
         end

@@ -17,11 +17,14 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
         function hello() {
           console.log('hello')
         }
+
+        <script>alert('js code')</script>
         ```
         ```html
         <h1>This is header</h1>
         ```
 
+        <script>alert('js code error')</script>
         plain text
 
         |   字段 |   类型 |   描述 | |
@@ -63,9 +66,12 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <div class="highlighter-rouge language-javascript"><div class="highlight"><pre class="codehilite"><code><span style="color: #000000;font-weight: bold">function</span> <span style="background-color: #f8f8f8">hello</span><span style="background-color: #f8f8f8">()</span> <span style="background-color: #f8f8f8">{</span>
         <span style="background-color: #f8f8f8">console</span><span style="background-color: #f8f8f8">.</span><span style="background-color: #f8f8f8">log</span><span style="background-color: #f8f8f8">(</span><span style="color: #d14">'</span><span style="color: #d14">hello</span><span style="color: #d14">'</span><span style="background-color: #f8f8f8">)</span>
       <span style="background-color: #f8f8f8">}</span>
-      </code></pre></div></div>
+
+      <span style="color: #000000;font-weight: bold">&lt;</span><span style="background-color: #f8f8f8">script</span><span style="color: #000000;font-weight: bold">&gt;</span><span style="background-color: #f8f8f8">alert</span><span style="background-color: #f8f8f8">(</span><span style="color: #d14">'</span><span style="color: #d14">js code</span><span style="color: #d14">'</span><span style="background-color: #f8f8f8">)</span><span style="color: #000000;font-weight: bold">&lt;</span><span style="color: #009926">/script</span><span style="color: #a61717;background-color: #e3d2d2">&gt;
+      </span></code></pre></div></div>
       <div class="highlighter-rouge language-html"><div class="highlight"><pre class="codehilite"><code><span style="color: #000080">&lt;h1&gt;</span>This is header<span style="color: #000080">&lt;/h1&gt;</span>
       </code></pre></div></div>
+
       <p>plain text</p>
       <table>
       <thead>
