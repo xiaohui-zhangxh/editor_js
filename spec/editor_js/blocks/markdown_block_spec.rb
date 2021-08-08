@@ -52,51 +52,42 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     it do
       html = <<~HTML.strip
       <div class="editor_js--markdown"><ul>
-      <li>nihao
-      </li><li>zaijian
-      </li></ul>
-
-      <h4 id="part-3786ddf3e2c1f26">来投票</h4>
-
+      <li>nihao</li>
+      <li>zaijian</li>
+      </ul>
+      <h4>来投票</h4>
       <ul>
-      <li><input type='checkbox' disabled> 投票
-      </li><li><input type='checkbox' checked='checked' disabled> 不投票
-      </li></ul>
-      <div class="CodeRay">
-        <div class="code"><pre><span class="keyword">function</span> <span class="function">hello</span>() {
-        console.log(<span class="string"><span class="delimiter">'</span><span class="content">hello</span><span class="delimiter">'</span></span>)
-      }
-      </pre></div>
-      </div>
-      <div class="CodeRay">
-        <div class="code"><pre><span class="tag">&lt;h1&gt;</span>This is header<span class="tag">&lt;/h1&gt;</span>
-      </pre></div>
-      </div>
-
+      <li class="task-list-item"><input type="checkbox" disabled="" /> 投票</li>
+      <li class="task-list-item"><input type="checkbox" checked="" disabled="" /> 不投票</li>
+      </ul>
+      <div class="highlighter-rouge language-javascript"><div class="highlight"><pre class="codehilite"><code><span style="color: #000000;font-weight: bold">function</span> <span style="background-color: #f8f8f8">hello</span><span style="background-color: #f8f8f8">()</span> <span style="background-color: #f8f8f8">{</span>
+        <span style="background-color: #f8f8f8">console</span><span style="background-color: #f8f8f8">.</span><span style="background-color: #f8f8f8">log</span><span style="background-color: #f8f8f8">(</span><span style="color: #d14">'</span><span style="color: #d14">hello</span><span style="color: #d14">'</span><span style="background-color: #f8f8f8">)</span>
+      <span style="background-color: #f8f8f8">}</span>
+      </code></pre></div></div>
+      <div class="highlighter-rouge language-html"><div class="highlight"><pre class="codehilite"><code><span style="color: #000080">&lt;h1&gt;</span>This is header<span style="color: #000080">&lt;/h1&gt;</span>
+      </code></pre></div></div>
       <p>plain text</p>
-
-      <table><thead>
+      <table>
+      <thead>
       <tr>
       <th>字段</th>
       <th>类型</th>
       <th>描述</th>
       <th></th>
       </tr>
-      </thead><tbody>
+      </thead>
+      <tbody>
       <tr>
       <td>identifier</td>
       <td></td>
       <td></td>
       <td></td>
       </tr>
-      </tbody></table>
-
+      </tbody>
+      </table>
       <p>++新消息++</p>
-
       <p><strong>撒地方</strong></p>
-
       <p><em>斜体</em></p>
-
       <p><del>这是啥</del></p>
       </div>
       HTML
