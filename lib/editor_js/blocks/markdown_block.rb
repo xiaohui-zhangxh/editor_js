@@ -4,21 +4,6 @@ module EditorJs
   module Blocks
     # markdown block
     class MarkdownBlock < Base
-      class HTMLwithCodeRay < Redcarpet::Render::HTML
-        def block_code(code, language)
-          CodeRay.scan(code, language || :text).div(css: :class)
-        end
-
-        def list_item(text, list_type)
-          if text.start_with?("[x]", "[X]")
-            text[0..2] = %(<input type='checkbox' checked='checked' disabled>)
-          elsif text.start_with?("[ ]")
-            text[0..2] = %(<input type='checkbox' disabled>)
-          end
-          %(<li>#{text}</li>)
-        end
-      end
-
       def sanitize!; end
 
       def schema
@@ -31,33 +16,29 @@ module EditorJs
         YAML
       end
 
+      # commonmarker: markdown to html
+      # https://github.com/gjtorikian/commonmarker
+      # https://github.github.com/gfm/#ordered-list
+      # https://meta.stackexchange.com/questions/348746/were-switching-to-commonmark
+
+      # rouge: syntax highlighter
+      # https://github.com/rouge-ruby/rouge/
+      # https://spsarolkar.github.io/rouge-theme-preview/
+      # shell: rougify help style
+      # # Get some CSS
+      # Rouge::Themes::Base16.mode(:light).render(scope: '.highlight')
+      # # Or use Theme#find with string input
+      # Rouge::Theme.find('base16.light').render(scope: '.highlight')
       def render(_options = {})
         content_tag :div, class: css_name do
           content_text = data['text'] || ''
-
-          render_options = {
-            escape_html: true,
-            hard_wrap: true,
-            with_toc_data: true,
-            link_attributes: { rel: 'nofollow', target: '_blank' }
-          }
-          renderer = HTMLwithCodeRay.new(render_options)
-
-          options = {
-            autolink: true,
-            fenced_code_blocks: true,
-            lax_spacing: true,
-            no_intra_emphasis: true,
-            strikethrough: true,
-            tables: true,
-            superscript: true,
-            highlight: true,
-            quote: true,
-            footnotes: true
-          }
-          markdown_to_html = Redcarpet::Markdown.new(renderer, options)
-
-          markdown_to_html.render(content_text).html_safe
+          CommonMarker::Rouge.render_html(
+            content_text,
+            %i[UNSAFE FOOTNOTES STRIKETHROUGH_DOUBLE_TILDE],
+            %i[UNSAFE GITHUB_PRE_LANG HARDBREAKS TABLE_PREFER_STYLE_ATTRIBUTES FULL_INFO_STRING FOOTNOTES],
+            %i[table strikethrough tasklist tagfilter],
+            formatter: Rouge::Formatters::HTMLLegacy.new(inline_theme: 'github')
+          ).html_safe
         end
       end
 
