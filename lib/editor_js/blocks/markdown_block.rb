@@ -29,7 +29,7 @@ module EditorJs
       # Rouge::Themes::Base16.mode(:light).render(scope: '.highlight')
       # # Or use Theme#find with string input
       # Rouge::Theme.find('base16.light').render(scope: '.highlight')
-      def render(options = {})
+      def render(_options = {})
         content_tag :div, class: css_name do
           content_text = data['text'] || ''
           CommonMarker::Rouge.render_html(
