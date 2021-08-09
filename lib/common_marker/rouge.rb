@@ -21,6 +21,16 @@ module CommonMarker
     end
 
     def process_ast(ast, cmr_options)
+      sanitize_options = {
+        remove_contents: true,
+        attributes: {
+          'a' => ['href', 'target'],
+          'ul' => ['type']
+        },
+        protocols: {
+          'a' => {'href' => ['http', 'https', 'mailto']}
+        }
+      }
       ast.walk do |node|
         if node.type == :code_block
           next if node.fence_info == ''
@@ -54,7 +64,24 @@ module CommonMarker
             node.string_content,
             ::Sanitize::Config.merge(
               ::Sanitize::Config::BASIC,
-              remove_contents: true
+              sanitize_options
+            )
+          )
+        elsif node.type == :inline_html
+          node_text = node.next
+          node_end  = node_text&.next
+          if node_text&.type == :text && node_end&.type == :inline_html
+            html_str = node.string_content + node_text.string_content + node_end.string_content
+            node_text.string_content = ''
+            node_end.string_content = ''
+          else
+            html_str = node.string_content
+          end
+          node.string_content = ::Sanitize.fragment(
+            html_str,
+            ::Sanitize::Config.merge(
+              ::Sanitize::Config::BASIC,
+              sanitize_options
             )
           )
         end
