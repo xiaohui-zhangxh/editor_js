@@ -51,12 +51,12 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       html = <<~HTML.strip
       <div class="editor_js--markdown"><ul>
       <li>无序列表1</li>
-      <li>无序列表2, </li>
+      <li>无序列表2,</li>
       </ul>
       <h4>来投票</h4>
       <ul>
-      <li class="task-list-item"><input type="checkbox" disabled="" /> 投票 <b>行内b标签</b>  </li>
-      <li class="task-list-item"><input type="checkbox" checked="" disabled="" /> 不投票<b></b>行内b标签，无结束标签</li>
+      <li class="task-list-item"><input type="checkbox" disabled="" /> 投票 <b>行内b标签</b></li>
+      <li class="task-list-item"><input type="checkbox" checked="" disabled="" /> 不投票<b>行内b标签，无结束标签</li>
       </ul>
       <div class="highlighter-rouge language-javascript"><div class="highlight"><pre class="codehilite"><code><span style="color: #000000;font-weight: bold">function</span> <span style="background-color: #f8f8f8">hello</span><span style="background-color: #f8f8f8">()</span> <span style="background-color: #f8f8f8">{</span>
         <span style="background-color: #f8f8f8">console</span><span style="background-color: #f8f8f8">.</span><span style="background-color: #f8f8f8">log</span><span style="background-color: #f8f8f8">(</span><span style="color: #d14">'</span><span style="color: #d14">hello</span><span style="color: #d14">'</span><span style="background-color: #f8f8f8">)</span>
@@ -66,7 +66,6 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       </span></code></pre></div></div>
       <div class="highlighter-rouge language-html"><div class="highlight"><pre class="codehilite"><code><span style="color: #000080">&lt;h1&gt;</span>This is header<span style="color: #000080">&lt;/h1&gt;</span>
       </code></pre></div></div>
-
       <p>plain text</p>
       <table>
       <thead>
@@ -89,7 +88,8 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <p>++新消息++</p>
       <p><strong>撒地方</strong></p>
       <p><em>斜体</em></p>
-      <p><del>这是啥</del></p>
+      <p><del>这是啥</del><br />
+      </b></p>
       </div>
       HTML
       expect(markdown.render).to eq(html)
@@ -110,9 +110,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     }
   end
   context 'with valid data: footnotes' do
-    let(:delimiter) { described_class.new(valid_data_footnotes) }
+    let(:markdown) { described_class.new(valid_data_footnotes) }
 
-    it { expect(delimiter).to be_valid }
+    it { expect(markdown).to be_valid }
     it do
       html = <<~HTML.strip
       <div class="editor_js--markdown"><p>Hello<sup class="footnote-ref"><a href="#fn1" id="fnref1">1</a></sup>.</p>
@@ -125,9 +125,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       </section>
       </div>
       HTML
-      expect(delimiter.render).to eq(html)
+      expect(markdown.render).to eq(html)
     end
-    it { expect(delimiter.plain).to eq(valid_data_footnotes[:data][:text].strip) }
+    it { expect(markdown.plain).to eq(valid_data_footnotes[:data][:text].strip) }
   end
 
   let(:valid_data_html) do
@@ -181,20 +181,18 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     }
   end
   context 'with valid data: html' do
-    let(:delimiter) { described_class.new(valid_data_html) }
+    let(:markdown) { described_class.new(valid_data_html) }
 
-    it { expect(delimiter).to be_valid }
+    it { expect(markdown).to be_valid }
     it do
       html = <<~HTML.strip
-      <div class="editor_js--markdown">
-
-      <b>b tag</b>
-      <em>em tag</em>
-      <i>i tag</i>
-      <strong>strong tag</strong>
-      <u>u tag</u>
-      <a rel="nofollow">a tag</a>
-      <abbr>abbr tag</abbr>
+      <div class="editor_js--markdown"><p><b>b tag</b><br />
+      <em>em tag</em><br />
+      <i>i tag</i><br />
+      <strong>strong tag</strong><br />
+      <u>u tag</u><br />
+      <a rel="nofollow">a tag</a><br />
+      <abbr>abbr tag</abbr></p>
       <blockquote>blockquote tag</blockquote>
       <br>
       <cite>cite tag</cite>
@@ -228,9 +226,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <var>var tag</var>
       </div>
       HTML
-      expect(delimiter.render).to eq(html)
+      expect(markdown.render).to eq(html)
     end
-    it { expect(delimiter.plain).to eq(valid_data_html[:data][:text].strip) }
+    it { expect(markdown.plain).to eq(valid_data_html[:data][:text].strip) }
   end
 
   let(:valid_data_list) do
@@ -255,9 +253,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     }
   end
   context 'with valid data: list' do
-    let(:delimiter) { described_class.new(valid_data_list) }
+    let(:markdown) { described_class.new(valid_data_list) }
 
-    it { expect(delimiter).to be_valid }
+    it { expect(markdown).to be_valid }
     it do
       html = <<~HTML.strip
       <div class="editor_js--markdown"><ul>
@@ -277,9 +275,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       </ol>
       </div>
       HTML
-      expect(delimiter.render).to eq(html)
+      expect(markdown.render).to eq(html)
     end
-    it { expect(delimiter.plain).to eq(valid_data_list[:data][:text].strip) }
+    it { expect(markdown.plain).to eq(valid_data_list[:data][:text].strip) }
   end
 
   let(:valid_data_table) do
@@ -302,9 +300,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
     }
   end
   context 'with valid data:table' do
-    let(:delimiter) { described_class.new(valid_data_table) }
+    let(:markdown) { described_class.new(valid_data_table) }
 
-    it { expect(delimiter).to be_valid }
+    it { expect(markdown).to be_valid }
     it do
       html = <<~HTML.strip
       <div class="editor_js--markdown"><p>One extension:</p>
@@ -330,9 +328,9 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
       <p><del>hi</del></p>
       </div>
       HTML
-      expect(delimiter.render).to eq(html)
+      expect(markdown.render).to eq(html)
     end
-    it { expect(delimiter.plain).to eq(valid_data_table[:data][:text].strip) }
+    it { expect(markdown.plain).to eq(valid_data_table[:data][:text].strip) }
   end
 
   let(:valid_data_task_list) do
@@ -344,19 +342,23 @@ RSpec.describe EditorJs::Blocks::MarkdownBlock do
           - [ ] bar
           - [x] baz <small>strong text</small>
         - [ ] bim <b>strong text</b>
-
         MARKDOWN
       }
     }
   end
   context 'with valid data: task_list' do
-    let(:delimiter) { described_class.new(valid_data_task_list) }
+    let(:markdown) { described_class.new(valid_data_task_list) }
 
-    it { expect(delimiter).to be_valid }
+    it { expect(markdown).to be_valid }
     it do
-      html = "<div class=\"editor_js--markdown\"><ul>\n<li class=\"task-list-item\"><input type=\"checkbox\" checked=\"\" disabled=\"\" /> foo    \n<ul>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled=\"\" /> bar</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" checked=\"\" disabled=\"\" /> baz <small>strong text</small></li>\n</ul>\n</li>\n<li class=\"task-list-item\"><input type=\"checkbox\" disabled=\"\" /> bim <b>strong text</b></li>\n</ul>\n</div>"
-      expect(delimiter.render).to eq(html)
+      html = <<~HTML.strip
+      <div class="editor_js--markdown"><ul>
+      <li class="task-list-item"><input type="checkbox" checked="" disabled="" /> foo</li>
+      </ul>
+      </div>
+      HTML
+      expect(markdown.render).to eq(html)
     end
-    it { expect(delimiter.plain).to eq(valid_data_task_list[:data][:text].strip) }
+    it { expect(markdown.plain).to eq(valid_data_task_list[:data][:text].strip) }
   end
 end
