@@ -28,7 +28,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'actionview', '>= 4'
   spec.add_dependency 'activesupport', '>= 4'
   spec.add_dependency 'json-schema', '~> 2'
-  spec.add_dependency 'sanitize', '~> 5.1'
+  spec.add_dependency 'sanitize', '~> 6.0'
   spec.add_dependency 'htmlentities', '~> 4.3', '>= 4.3.4'
   spec.add_dependency 'redcarpet', '~> 3.5'
   spec.add_dependency 'coderay', '~> 1.1', '>= 1.1.2'
