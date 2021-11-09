@@ -36,9 +36,8 @@ module EditorJs
       blocks = @content['blocks'].map do |blk_data|
         EditorJs::Blocks::Base.load(blk_data)
       end
-      @valid = blocks.all?(&:valid?)
-      @blocks = blocks if @valid
-      @valid
+      @blocks = blocks.select(&:valid?)
+      @valid = @blocks.count.positive?
     end
 
     def render
