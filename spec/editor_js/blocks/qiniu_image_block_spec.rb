@@ -5,7 +5,7 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     {
       type: 'qiniu_image',
       data: {
-        url: 'http://xxx/image.png',
+        file: { url: 'http://xxx/image.png' },
         caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code</small>',
         withBorder: true,
         withBackground: false,
@@ -18,7 +18,7 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     {
       type: 'qiniu_image',
       data: {
-        url: 'http://xxx/image2.png',
+        file: { url: 'http://xxx/image2.png' },
         caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code2</small>',
         withBorder: true,
         withBackground: true,
@@ -31,7 +31,7 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     {
       type: 'qiniu_image',
       data: {
-        url: 'http://xxx/image3.png',
+        file: { url: 'http://xxx/image3.png' },
         caption: '七牛<b>图片</b>2&lt;/div&gt;<small>text code3</small>',
         withBorder: false,
         withBackground: false,
@@ -44,7 +44,7 @@ RSpec.describe EditorJs::Blocks::QiniuImageBlock do
     {
       type: 'qiniuImage',
       data: {
-        url: 'http://xxx/f.image4.png',
+        file: { url: 'http://xxx/f.image4.png' },
         caption: '七牛<b>图片</b>4&lt;/div&gt;<small>text code3</small>',
         withBorder: true,
         withBackground: true,
