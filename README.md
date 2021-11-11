@@ -32,6 +32,35 @@ doc.output  # [Hash] return sanitized data
 
 ```
 
+**Capture invalid block:**
+
+```ruby
+class MyInvalidBlockRender do
+  def initialize(raw)
+    @raw = raw
+    # can record/log invalid block from here:
+    # Sentry.capture_message "invalid block: #{raw}"
+  end
+
+  def valid?
+    false
+  end
+
+  def render
+    '<div>invalid block</div>'
+  end
+
+  def plain; end
+  def output; {} end
+end
+
+doc = EditorJs::Document.new(editor_js_output, invalid_block_renderer: MyInvalidBlockRender)
+doc.render  # [String] render HTML for display
+doc.plain   # [String] render text for full-text searching
+doc.output  # [Hash] return sanitized data
+
+```
+
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.

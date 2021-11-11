@@ -21,8 +21,9 @@ module EditorJs
       - version
     YAML
 
-    def initialize(str_or_hash)
+    def initialize(str_or_hash, invalid_block_renderer: nil)
       str_or_hash = JSON.parse(str_or_hash) unless str_or_hash.is_a?(Hash)
+      @invalid_block_renderer = invalid_block_renderer
       @content = str_or_hash
       @blocks = []
     end
@@ -33,12 +34,11 @@ module EditorJs
       @valid = JSON::Validator.validate(SCHEMA, @content)
       return false unless @valid
 
-      blocks = @content['blocks'].map do |blk_data|
-        EditorJs::Blocks::Base.load(blk_data)
-      end
-      @valid = blocks.all?(&:valid?)
-      @blocks = blocks if @valid
-      @valid
+      @blocks = @content['blocks'].map do |blk_data|
+        blk = EditorJs::Blocks::Base.load(blk_data)
+        blk.valid? ? blk : @invalid_block_renderer&.new(blk_data)
+      end.compact
+      @valid = @blocks.count.positive?
     end
 
     def render
