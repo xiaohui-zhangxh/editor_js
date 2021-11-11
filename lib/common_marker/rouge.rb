@@ -49,14 +49,6 @@ module CommonMarker
 
           node.insert_before(new_node)
           node.delete
-        elsif node.type == :html
-          node.string_content = ::Sanitize.fragment(
-            node.string_content,
-            ::Sanitize::Config.merge(
-              ::Sanitize::Config::BASIC,
-              remove_contents: true
-            )
-          )
         end
       end
     end

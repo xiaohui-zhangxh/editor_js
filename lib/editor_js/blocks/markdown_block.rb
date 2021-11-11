@@ -31,7 +31,8 @@ module EditorJs
       # Rouge::Theme.find('base16.light').render(scope: '.highlight')
       def render(_options = {})
         content_tag :div, class: css_name do
-          content_text = data['text'] || ''
+          content_text = filter_html(data['text']) || ''
+
           CommonMarker::Rouge.render_html(
             content_text,
             %i[UNSAFE FOOTNOTES STRIKETHROUGH_DOUBLE_TILDE],
@@ -44,6 +45,45 @@ module EditorJs
 
       def plain
         data['text'].strip
+      end
+
+      private
+
+      def filter_html(html_str)
+        reg = %r{(`[^\n|```]+?`)|(\n+```.+?```)|([^\n]```[^\n]+?```)|(<code>[^\n]+?<\/code>)}m
+        reg2 = %r{(?:`([^\n|```]+?)`)|(?:\n+```(.+?)```)|(?:[^\n]```([^\n]+?)```)|(?:<code>([^\n]+?)<\/code>)}m
+        html_str = html_str.split(reg).map do |str|
+          if str =~ reg2
+            match_text = $1 || $2 || $3 || $4
+            str.sub!(match_text, CGI.escapeHTML(match_text)) if match_text.present?
+          end
+          str
+        end.join
+        html_str = sanitize_html(html_str)
+        html_str.split(reg).map do |str|
+          if str =~ reg2
+            match_text = $1 || $2 || $3 || $4
+            str.sub!(match_text, CGI.unescapeHTML(match_text)) if match_text.present?
+          end
+          str
+        end.join
+      end
+
+      def sanitize_html(html_str)
+        sanitize_options = {
+          remove_contents: true,
+          attributes: {
+            'a' => %w[href target],
+            'ul' => ['type']
+          },
+          protocols: {
+            'a' => { 'href' => %w[http https mailto] }
+          }
+        }
+        ::Sanitize.fragment(
+          html_str,
+          ::Sanitize::Config.merge(::Sanitize::Config::BASIC, sanitize_options)
+        )
       end
     end
   end
