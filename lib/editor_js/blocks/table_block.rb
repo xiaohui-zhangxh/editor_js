@@ -9,6 +9,8 @@ module EditorJs
           type: object
           additionalProperties: false
           properties:
+            withHeadings:
+              type: boolean
             content:
               type: array
               items:
@@ -21,13 +23,18 @@ module EditorJs
       def render(_options = {})
         content_tag(:div, class: css_name) do
           content_tag(:table) do
-            data['content'].map do |row|
+            data['content'].map.with_index do |row, row_index|
+              col_tag = with_headings? && row_index.zero? ? :th : :td
               content_tag(:tr) do
-                row.map { |col| content_tag :td, col.html_safe }.join().html_safe
+                row.map { |c| content_tag(col_tag, c.html_safe) }.join.html_safe
               end
-            end.join().html_safe
+            end.join.html_safe
           end
         end
+      end
+
+      def with_headings?
+        !!data['withHeadings']
       end
 
       def safe_tags
