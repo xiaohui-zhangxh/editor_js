@@ -17,7 +17,9 @@
         {
             "type": "qiniuImage",
             "data": {
-                "url": "http://assets.wedxt.com/1576659125484-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-15%2021.34.57.png",
+                "file": {
+                  "url": "http://assets.wedxt.com/1576659125484-%E5%B1%8F%E5%B9%95%E5%BF%AB%E7%85%A7%202019-10-15%2021.34.57.png"
+                },
                 "caption": "",
                 "withBorder": false,
                 "withBackground": false,

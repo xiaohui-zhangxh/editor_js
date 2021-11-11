@@ -11,8 +11,14 @@ module EditorJs
           properties:
             caption:
               type: string
-            url:
-              type: string
+            file:
+              type: object
+              additionalProperties: true
+              properties:
+                url:
+                  type: string
+              required:
+              - url
             stretched:
               type: boolean
             withBackground:
@@ -20,13 +26,13 @@ module EditorJs
             withBorder:
               type: boolean
           required:
-          - url
+          - file
         YAML
       end
 
       def render(_options = {})
         content_tag :div, class: css_name do
-          url = data['url']
+          url = data.dig('file', 'url')
           caption = data['caption']
           withBorder = data['withBorder']
           withBackground = data['withBackground']
@@ -45,13 +51,11 @@ module EditorJs
       end
 
       def sanitize!
-        %w[caption url].each do |key|
-          str = Sanitize.fragment(data[key], remove_contents: true).strip
-          if key == 'url'
-            str.gsub!('&amp;', '&')
-          end
-          data[key] = str
-        end
+        data['caption'] = Sanitize.fragment(data['caption'], remove_contents: true).strip
+        data['file'] ||= {}
+        url = Sanitize.fragment(data.dig('file', 'url'), remove_contents: true).strip
+        url.gsub!('&amp;', '&')
+        data['file']['url'] = url
       end
 
       def plain
