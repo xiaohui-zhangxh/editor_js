@@ -1,0 +1,25 @@
+{
+  "time": 1576142051557,
+  "blocks": [
+      {
+          "type": "paragraph",
+          "data": {
+              "text": "hello<script>hacker code</script> &lt;b&gt;World2&lt;/b&gt;"
+          }
+      },
+      {
+          "type": "header",
+          "data": {
+              "text": "testing&lt;i&gt;hello&lt;/i&gt;<small>small texty</small>",
+              "level": 2
+          }
+      },
+      {
+        "type": "header",
+        "data": {
+            "bad-attr": "xxx"
+        }
+    }
+  ],
+  "version": "2.16.1"
+}
