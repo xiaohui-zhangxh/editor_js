@@ -27,7 +27,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency 'actionview', '>= 4'
   spec.add_dependency 'activesupport', '>= 4'
-  spec.add_dependency 'commonmarker', '~> 0.21.2'
+  spec.add_dependency 'commonmarker', '>= 0.21.2', '< 0.24.0'
   spec.add_dependency 'htmlentities', '~> 4.3', '>= 4.3.4'
   spec.add_dependency 'json-schema', '~> 2'
   spec.add_dependency 'rouge', '~> 3.26'
