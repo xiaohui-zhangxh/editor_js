@@ -2,7 +2,6 @@ require 'simplecov'
 SimpleCov.start
 
 require "bundler/setup"
-require 'pry'
 require "editor_js"
 
 RSpec.configure do |config|

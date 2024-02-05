@@ -6,16 +6,16 @@ module CommonMarker
   module Rouge
     module_function
 
-    def parse_doc(text, cmark_options = :DEFAULT, extensions = [], **cmr_options)
+    def render_doc(text, cmark_options = :DEFAULT, extensions = [], **cmr_options)
       cmark = cmr_options[:cmark_class] || ::CommonMarker
 
-      ast = cmark.parse_doc(text, cmark_options, extensions)
+      ast = cmark.render_doc(text, cmark_options, extensions)
       process_ast(ast, cmr_options)
       ast
     end
 
     def render_html(text, cmark_options = :DEFAULT, render_options = :UNSAFE, extensions = [], **cmr_options)
-      doc = parse_doc(text, cmark_options, extensions, **cmr_options)
+      doc = render_doc(text, cmark_options, extensions, **cmr_options)
       CommonMarker::CustomHtmlRenderer.new(options: render_options, extensions: extensions).render(doc)
       # doc.to_html(render_options)
     end
