@@ -29,7 +29,7 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'activesupport', '~> 6.1.7.6'
   spec.add_dependency 'commonmarker', '>= 1.0.3'
   spec.add_dependency 'htmlentities', '~> 4.3', '>= 4.3.4'
-  spec.add_dependency 'json-schema', '~> 2'
+  spec.add_dependency 'json-schema', '~> 3.0.0'
   spec.add_dependency 'rouge', '~> 3.26'
   spec.add_dependency 'sanitize', '~> 6.0.0'
   spec.add_development_dependency 'bundler', '~> 2.0'
