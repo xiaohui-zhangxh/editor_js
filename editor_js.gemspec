@@ -28,10 +28,10 @@ Gem::Specification.new do |spec|
   spec.add_dependency 'actionview', '~> 6.1.7.6'
   spec.add_dependency 'activesupport', '~> 6.1.7.6'
   spec.add_dependency 'commonmarker', '~> 0.23.10'
-  spec.add_dependency 'htmlentities', '~> 4.3', '>= 4.3.4'
+  spec.add_dependency 'htmlentities', '~> 4.3', '>= 4.3.4' # latest
   spec.add_dependency 'json-schema', '~> 3.0.0'
-  spec.add_dependency 'rouge', '~> 3.26'
-  spec.add_dependency 'sanitize', '~> 6.0.0'
+  spec.add_dependency 'rouge', '~> 3.26'  # cannot update higher due to ruby support higher of 2.7
+  spec.add_dependency 'sanitize', '~> 6.1'
   spec.add_development_dependency 'bundler', '~> 2.0'
   spec.add_development_dependency 'rake', '~> 13.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
